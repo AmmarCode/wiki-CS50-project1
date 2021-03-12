@@ -33,33 +33,12 @@ def new(request):
     return render(request, "encyclopedia/new.html")
 
 def save(request):
-    if request.method == 'POST':
-        input_title = request.POST['title']
-        input_text = request.POST['text']
-        entries = util.list_entries()
-        if input_title in entries:
-            return render(request, 'encyclopedia/entry_exists')
-        else:
-            util.save_entry(input_title, input_text)
-            converted_entry = convert_to_html(input_title)
-            return render(request, "encyclopedia/entry.html", {
-                "entry": converted_entry,
-                "entry_title": input_title
-            })
-
-def edit(request):
-    if request.method == 'POST':
-        input_title = request.POST['title']
-        text = util.get_entry(input_title)
-        return render(request, "encyclopedia/edit.html", {
-            "entry": text,
-            "entry_title": input_title
-        })
-
-def save_edit(request):
-    if request.method == 'POST':
-        input_title = request.POST['title']
-        input_text = request.POST['text']
+    input_title = request.POST['title']
+    input_text = request.POST['text']
+    entries = util.list_entries()
+    if input_title in entries:
+        return render(request, 'encyclopedia/entry_exists')
+    else:
         util.save_entry(input_title, input_text)
         converted_entry = convert_to_html(input_title)
         return render(request, "encyclopedia/entry.html", {
@@ -67,25 +46,41 @@ def save_edit(request):
             "entry_title": input_title
         })
 
-def search(request):
-    if request.method == 'POST':
-        input = request.POST['q']
-        converted_entry = convert_to_html(input)
+def edit(request):
+    input_title = request.POST['title']
+    text = util.get_entry(input_title)
+    return render(request, "encyclopedia/edit.html", {
+        "entry": text,
+        "entry_title": input_title
+    })
 
-        entries = util.list_entries()
-        if input in entries:
-            return render(request, "encyclopedia/entry.html", {
-                "entry": converted_entry,
-                "entry_title": input
-            })
-        else:
-            pages = []
-            for entry in entries:
-                if input.lower() in entry.lower():
-                    pages.append(entry)
-            return render(request, "encyclopedia/search.html", {
-                "entries": pages
-            })
+def save_edit(request):
+    input_title = request.POST['title']
+    input_text = request.POST['text']
+    util.save_entry(input_title, input_text)
+    converted_entry = convert_to_html(input_title)
+    return render(request, "encyclopedia/entry.html", {
+        "entry": converted_entry,
+        "entry_title": input_title
+    })
+
+def search(request):
+    input = request.POST['q']
+    converted_entry = convert_to_html(input)
+    entries = util.list_entries()
+    if input in entries:
+        return render(request, "encyclopedia/entry.html", {
+            "entry": converted_entry,
+            "entry_title": input
+        })
+    else:
+        pages = []
+        for entry in entries:
+            if input.lower() in entry.lower():
+                pages.append(entry)
+        return render(request, "encyclopedia/search.html", {
+            "entries": pages
+        })
 
 def random_entry(request)        :
     entries = util.list_entries()
