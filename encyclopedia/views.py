@@ -19,12 +19,12 @@ def entry(request, entry):
     converted_entry = convert_to_html(entry)
     if converted_entry is None:
         return render(request, "encyclopedia/entry_doesnt_exist.html", {
-            "entry_title": entry.upper()
+            "entry_title": entry
         })
     else:
         return render(request, "encyclopedia/entry.html", {
             "entry": converted_entry,
-            "entry_title": entry.upper()
+            "entry_title": entry
         })
 
 def new(request):
@@ -44,3 +44,23 @@ def save(request):
                 "entry": converted_entry,
                 "entry_title": input_title
             })
+
+def edit(request):
+    if request.method == 'POST':
+        input_title = request.POST['title']
+        text = util.get_entry(input_title)
+        return render(request, "encyclopedia/edit.html", {
+            "entry": text,
+            "entry_title": input_title
+        })
+
+def save_edit(request):
+    if request.method == 'POST':
+        input_title = request.POST['title']
+        input_text = request.POST['text']
+        util.save_entry(input_title, input_text)
+        converted_entry = convert_to_html(input_title)
+        return render(request, "encyclopedia/entry.html", {
+            "entry": converted_entry,
+            "entry_title": input_title
+        })
