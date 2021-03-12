@@ -1,3 +1,5 @@
+import random
+
 from django.shortcuts import render
 from markdown2 import Markdown
 
@@ -84,3 +86,12 @@ def search(request):
             return render(request, "encyclopedia/search.html", {
                 "entries": pages
             })
+
+def random_entry(request)        :
+    entries = util.list_entries()
+    random_entry = random.choice(entries)
+    converted_entry = convert_to_html(random_entry)
+    return render(request, "encyclopedia/entry.html", {
+        "entry": converted_entry,
+        "entry_title": random_entry
+    })
