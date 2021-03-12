@@ -64,3 +64,23 @@ def save_edit(request):
             "entry": converted_entry,
             "entry_title": input_title
         })
+
+def search(request):
+    if request.method == 'POST':
+        input = request.POST['q']
+        converted_entry = convert_to_html(input)
+
+        entries = util.list_entries()
+        if input in entries:
+            return render(request, "encyclopedia/entry.html", {
+                "entry": converted_entry,
+                "entry_title": input
+            })
+        else:
+            pages = []
+            for entry in entries:
+                if input.lower() in entry.lower():
+                    pages.append(entry)
+            return render(request, "encyclopedia/search.html", {
+                "entries": pages
+            })
