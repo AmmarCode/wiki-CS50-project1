@@ -37,7 +37,7 @@ def save(request):
     input_text = request.POST['text']
     entries = util.list_entries()
     if input_title in entries:
-        return render(request, 'encyclopedia/entry_exists')
+        return render(request, 'encyclopedia/entry_exists.html')
     else:
         util.save_entry(input_title, input_text)
         converted_entry = convert_to_html(input_title)
@@ -78,9 +78,12 @@ def search(request):
         for entry in entries:
             if input.lower() in entry.lower():
                 pages.append(entry)
-        return render(request, "encyclopedia/search.html", {
-            "entries": pages
-        })
+        if len(pages) == 0:
+            return render(request, "encyclopedia/no_result.html")
+        else:
+            return render(request, "encyclopedia/search.html", {
+                "entries": pages
+            })
 
 def random_entry(request)        :
     entries = util.list_entries()
