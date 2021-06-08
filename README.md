@@ -1,7 +1,9 @@
-## wiki-CS50-project1
+# wiki-CS50-project1
 
-wiki is a Wikipedia like online encyclopedia, It's designed to save entries on various topics as markdown files.
+wiki is a Wikipedia like online encyclopedia site.
 
-The entries will be converted to HTML before rendering it to the client. 
+Homepage displays the menu on the left section of the display and all pages on the right section of the display.
+
+Menu allows the user to search for a specific page, create a new page, select a random page to view, and go back to the home page.
 
 [wiki demo](https://www.youtube.com/watch?v=VJ8xSR4tlJI)
